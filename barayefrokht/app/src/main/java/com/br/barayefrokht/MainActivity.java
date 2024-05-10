@@ -1,11 +1,9 @@
 package com.br.barayefrokht;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         webview = findViewById(R.id.webView);
         WebSettings webSettings = webview.getSettings();
@@ -92,18 +89,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         // Keep webview in app when clicking links
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            // Check if the URL is a mixed content URL
-            if (url.startsWith("http://") || url.startsWith("https://")) {
-                // Load mixed content URLs directly without reloading the WebView
-                view.loadUrl(url);
-                return true; // Return true to indicate that the URL loading has been handled
-            } else {
-                // For other URLs, let WebView handle them (e.g., tel:, mailto:, etc.)
-                return super.shouldOverrideUrlLoading(view, url);
-            }
+            view.loadUrl(url);
+            return true;
         }
     }
-
 
     private class WebChromeClientDemo extends WebChromeClient {
         // For Android 5.0+
@@ -161,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
     //set back button functionality
     @Override
     public void onBackPressed() { //if user presses the back button do this
-        super.onBackPressed();
         if (webview.isFocused() && webview.canGoBack()) { //check if in webview and the user can go back
             webview.goBack(); //go back in webview
         } else { //do this if the webview cannot go back any further
@@ -200,20 +188,8 @@ public class MainActivity extends AppCompatActivity {
 
     public class WebAppInterface {
         @android.webkit.JavascriptInterface
-        public void openWhatsApp(String sellingPrice, String message) {
-            // Check if the device has WhatsApp installed
-            PackageManager pm = getPackageManager();
-            try {
-                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES);
-                // WhatsApp is installed
-                String whatsappUrl = "https://wa.me/" + sellingPrice + "?text=" + Uri.encode(message);
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(whatsappUrl));
-                startActivity(intent);
-            } catch (PackageManager.NameNotFoundException e) {
-                // WhatsApp is not installed
-                Toast.makeText(MainActivity.this, "WhatsApp is not installed", Toast.LENGTH_SHORT).show();
-            }
+        public void showToast(String message) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
         }
     }
 }
