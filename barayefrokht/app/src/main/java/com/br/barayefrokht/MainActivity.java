@@ -89,8 +89,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         // Keep webview in app when clicking links
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
+            if (url.startsWith("whatsapp://")) {
+                // If the URL starts with "whatsapp://", open it using an Intent
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                startActivity(intent);
+                return true; // Return true to indicate that the URL has been handled
+            } else {
+                // For other URLs, load them in the WebView
+                view.loadUrl(url);
+                return true;
+            }
         }
     }
 
@@ -156,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
             new AlertDialog.Builder(this) //alert the person knowing they are about to close
                     .setTitle("EXIT")
-                    .setMessage("Are you sure you want to close this app?")
+                    .setMessage("Are you sure?")
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
