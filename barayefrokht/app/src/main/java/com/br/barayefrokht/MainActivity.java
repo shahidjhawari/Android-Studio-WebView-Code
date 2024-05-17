@@ -1,14 +1,18 @@
 package com.br.barayefrokht;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
@@ -18,20 +22,23 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int FILE_CHOOSER_REQUEST_CODE = 1;
+    private static final int REQUEST_PERMISSION_CODE = 2;
 
     String websiteURL = "https://barayefrokht.vercel.app/"; // sets web url
     private WebView webview;
     private ValueCallback<Uri[]> mFilePathCallback;
     private String mCameraPhotoPath;
-    private SwipeRefreshLayout mySwipeRefreshLayout;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,21 +51,9 @@ public class MainActivity extends AppCompatActivity {
             // Webview stuff
             setupWebView();
         }
-
-        // Swipe to refresh functionality
-        mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
-        mySwipeRefreshLayout.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        webview.reload();
-                        // Stop the refreshing animation
-                        mySwipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-        );
     }
 
+    @SuppressLint({"SetJavaScriptEnabled", "ObsoleteSdkInt"})
     private void setupWebView() {
         webview = findViewById(R.id.webView);
         WebSettings webSettings = webview.getSettings();
