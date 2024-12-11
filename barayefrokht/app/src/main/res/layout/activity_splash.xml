@@ -1,55 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    xmlns:tools="http://schemas.android.com/tools"
-
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    android:orientation="vertical"
-
-    tools:context=".SplashActivity">
-
-
-    <ImageView
-
+    <!-- Top Banner AdView -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/topAdView"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3634516383748300/1311548444" />
 
-        android:layout_height="300dp"
+    <!-- Splash screen image -->
+    <ImageView
+        android:id="@+id/splashImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/topAdView"
+        android:layout_above="@id/bottomAdView"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo" />
 
-        android:src="@drawable/logo"
+    <!-- Bottom Banner AdView -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/bottomAdView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-3634516383748300/9217787183" />
 
-        android:scaleType="centerCrop"
-
-        android:padding="70dp"
-
-        android:layout_marginTop="220dp"/>
-
-    <ProgressBar
-
-        android:layout_width="220dp"
-
-        android:layout_height="10dp"
-
-        android:layout_gravity="center_horizontal"
-
-        style="?android:attr/progressBarStyleHorizontal"
-
-        android:max="100"
-
-        android:indeterminate="true"
-
-        android:progress="0"
-
-        android:layout_marginTop="100dp"
-
-
-        />
-
-
-
-</LinearLayout>
+</RelativeLayout>
